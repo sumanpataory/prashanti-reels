@@ -1,0 +1,11 @@
+{
+  "name": "prashanti-reels-motion-graphics",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "render": "node render.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.48.0"
+  }
+}
