@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1080, height=1920, initial-scale=1.0" />
+  <title>প্রশান্তি — Reels Editorial Motion Graphics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Noto+Sans+Bengali:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <style>
+    :root {
+      --bg-paper: #FBFAF7;
+      --dot-color: #D6D3D1;
+      --accent: #690AFF;
+      --accent-soft: #EDE9FE;
+      --accent-border: #DDD6FE;
+      --card-bg: #FFFFFF;
+      --text-main: #111827;
+      --text-muted: #6B7280;
+      --success: #10B981;
+      --error: #EF4444;
+      --warning: #F59E0B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background: #18181B;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Noto Sans Bengali', 'Montserrat', sans-serif;
+      overflow: hidden;
+    }
+
+    /* 1080x1920 9:16 Vertical Stage */
+    #stage {
+      width: 1080px;
+      height: 1920px;
+      position: relative;
+      overflow: hidden;
+      background-color: var(--bg-paper);
+      background-image:
+        radial-gradient(circle at 50% 38%, rgba(105, 10, 255, 0.06) 0%, transparent 62%),
+        radial-gradient(var(--dot-color) 1.3px, transparent 1.3px);
+      background-size: 100% 100%, 24px 24px;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+      transform-origin: center center;
+    }
+
+    /* Safe Area Guide: top 220px, bottom 340px, left/right 80px */
+    .safe-canvas {
+      position: absolute;
+      top: 210px;
+      left: 80px;
+      right: 80px;
+      bottom: 360px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .scene {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* Editorial Cards */
+    .ed-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(17, 24, 39, 0.08);
+      border-radius: 36px;
+      box-shadow: 0 18px 44px rgba(17, 24, 39, 0.07);
+      padding: 48px;
+      width: 100%;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--accent-soft);
+      border: 1.5px solid var(--accent-border);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 28px;
+      padding: 12px 28px;
+      border-radius: 999px;
+      margin-bottom: 28px;
+    }
+
+    .hero-title {
+      font-size: 92px;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.2;
+      text-align: center;
+    }
+
+    .hero-title .hl {
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 4px 24px;
+      border-radius: 24px;
+      display: inline-block;
+    }
+
+    .sub-desc {
+      font-size: 38px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.5;
+      margin-top: 24px;
+    }
+
+    /* Scene 2: Contrast */
+    .contrast-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      margin-top: 32px;
+    }
+
+    .contrast-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #FFFFFF;
+      border: 2px solid #FEE2E2;
+      border-radius: 28px;
+      padding: 32px 40px;
+      box-shadow: 0 12px 28px rgba(239, 68, 68, 0.06);
+    }
+
+    .contrast-item .word {
+      font-size: 46px;
+      font-weight: 700;
+      color: var(--text-main);
+      text-decoration: line-through;
+      text-decoration-color: var(--error);
+      text-decoration-thickness: 4px;
+    }
+
+    .icon-circle-err {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: #FEE2E2;
+      color: var(--error);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 34px;
+    }
+
+    /* Scene 3: Dictionary UI Window */
+    .browser-window {
+      width: 100%;
+      background: #FFFFFF;
+      border-radius: 36px;
+      border: 1.5px solid rgba(17, 24, 39, 0.09);
+      box-shadow: 0 24px 60px rgba(17, 24, 39, 0.1);
+      overflow: hidden;
+      transform-origin: center center;
+    }
+
+    .browser-top {
+      background: #F3F4F6;
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-bottom: 1px solid #E5E7EB;
+    }
+
+    .dot { width: 18px; height: 18px; border-radius: 50%; }
+    .dot.r { background: #EF4444; }
+    .dot.y { background: #F59E0B; }
+    .dot.g { background: #10B981; }
+
+    .url-bar {
+      margin-left: 16px;
+      background: #FFFFFF;
+      padding: 10px 24px;
+      border-radius: 999px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 24px;
+      color: var(--text-muted);
+      flex: 1;
+    }
+
+    .browser-body {
+      padding: 48px 40px;
+    }
+
+    .search-box {
+      border: 2.5px solid var(--accent);
+      background: #FAF8FF;
+      border-radius: 24px;
+      padding: 24px 32px;
+      font-size: 44px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 36px;
+    }
+
+    .cursor-caret {
+      display: inline-block;
+      width: 4px;
+      height: 44px;
+      background: var(--accent);
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .en-pill-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .en-pill {
+      background: var(--accent-soft);
+      border: 2px solid var(--accent-border);
+      border-radius: 24px;
+      padding: 26px 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .en-pill span.en {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 44px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .en-pill span.tag {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      background: #FFFFFF;
+      color: var(--text-muted);
+      padding: 8px 18px;
+      border-radius: 999px;
+    }
+
+    /* Scene 4 & 5: Synonyms & Antonyms Grid */
+    .hub-header {
+      background: var(--accent);
+      color: #FFFFFF;
+      padding: 28px 54px;
+      border-radius: 999px;
+      font-size: 48px;
+      font-weight: 800;
+      box-shadow: 0 16px 36px rgba(105, 10, 255, 0.28);
+      margin-bottom: 44px;
+    }
+
+    .hub-header.err {
+      background: var(--error);
+      box-shadow: 0 16px 36px rgba(239, 68, 68, 0.25);
+    }
+
+    .chip-stack {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .word-chip {
+      background: #FFFFFF;
+      border: 1.5px solid rgba(17, 24, 39, 0.08);
+      border-radius: 26px;
+      padding: 26px 38px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      box-shadow: 0 12px 28px rgba(17, 24, 39, 0.06);
+      font-size: 44px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .chip-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .chip-icon.ok { background: #D1FAE5; color: var(--success); }
+    .chip-icon.no { background: #FEE2E2; color: var(--error); }
+
+    /* Scene 6 & 7: Checklist & Progress Ring */
+    .todo-card {
+      width: 100%;
+      background: #FFFFFF;
+      border-radius: 36px;
+      padding: 44px;
+      border: 1.5px solid rgba(17, 24, 39, 0.08);
+      box-shadow: 0 20px 50px rgba(17, 24, 39, 0.08);
+      position: relative;
+    }
+
+    .todo-row {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      padding: 30px 32px;
+      border-radius: 26px;
+      background: #F9FAFB;
+      border: 2px solid #E5E7EB;
+      margin-bottom: 24px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .todo-row.checked {
+      background: #F5F3FF;
+      border-color: var(--accent);
+    }
+
+    .checkbox-box {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      border: 3px solid #D1D5DB;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      font-weight: 800;
+      color: #FFFFFF;
+      background: #FFFFFF;
+      flex-shrink: 0;
+    }
+
+    .todo-row.checked .checkbox-box {
+      background: var(--success);
+      border-color: var(--success);
+    }
+
+    .todo-label {
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* Slider & Meter (Scene 7) */
+    .meter-box {
+      width: 100%;
+      background: #FFFFFF;
+      border-radius: 36px;
+      padding: 48px;
+      border: 1.5px solid rgba(17, 24, 39, 0.08);
+      box-shadow: 0 20px 50px rgba(17, 24, 39, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .slider-track-wrap {
+      width: 100%;
+      background: #FEF2F2;
+      border: 2px solid #FECACA;
+      border-radius: 28px;
+      padding: 32px;
+    }
+
+    .slider-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 34px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 22px;
+    }
+
+    .slider-bar {
+      width: 100%;
+      height: 24px;
+      background: #E5E7EB;
+      border-radius: 999px;
+      position: relative;
+    }
+
+    .slider-fill {
+      height: 100%;
+      width: 85%;
+      background: var(--error);
+      border-radius: 999px;
+    }
+
+    .slider-knob {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 6px solid var(--error);
+      position: absolute;
+      top: 50%;
+      left: 85%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+    }
+
+    .ring-wrap {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ring-text {
+      position: absolute;
+      text-align: center;
+    }
+
+    .ring-num {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 68px;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .ring-sub {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    /* Scene 8: Reference Cards */
+    .ref-card {
+      width: 100%;
+      background: #FFFFFF;
+      border: 2px solid rgba(17, 24, 39, 0.08);
+      border-radius: 32px;
+      padding: 38px 42px;
+      box-shadow: 0 18px 44px rgba(17, 24, 39, 0.07);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .ref-logo {
+      width: 96px;
+      height: 96px;
+      border-radius: 26px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 38px;
+      flex-shrink: 0;
+    }
+
+    .ref-info h3 {
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .ref-info p {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* Vector Cursor & Purple Ripple Wave */
+    #cursor {
+      position: absolute;
+      width: 58px;
+      height: 58px;
+      z-index: 90;
+      pointer-events: none;
+      opacity: 0;
+      filter: drop-shadow(0 8px 14px rgba(17, 24, 39, 0.25));
+    }
+
+    #ripple {
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 5px solid var(--accent);
+      background: rgba(105, 10, 255, 0.22);
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+      z-index: 85;
+      pointer-events: none;
+    }
+
+    /* Dynamic Word-Highlighted Pill Subtitle (bottom: 260px) */
+    #subtitle-zone {
+      position: absolute;
+      bottom: 240px;
+      left: 70px;
+      right: 70px;
+      display: flex;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .subtitle-pill {
+      background: rgba(255, 255, 255, 0.96);
+      border: 1.5px solid rgba(17, 24, 39, 0.08);
+      border-radius: 999px;
+      padding: 20px 42px;
+      box-shadow: 0 16px 40px rgba(17, 24, 39, 0.12);
+      display: inline-flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      max-width: 940px;
+    }
+
+    .sub-word {
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: inline-block;
+      transition: color 0.08s ease;
+    }
+
+    .sub-word.active {
+      color: var(--accent);
+      font-weight: 800;
+      transform: scale(1.08);
+    }
+
+    /* Preview Controls */
+    #preview-bar {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(17, 24, 39, 0.9);
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      z-index: 9999;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+    }
+    #preview-bar button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div id="stage">
+  <div class="safe-canvas">
+
+    <!-- SCENE 1: HOOK (0.00s - 4.50s) -->
+    <div class="scene" id="scene-1">
+      <div class="ed-card" id="s1-card" style="text-align:center;">
+        <div class="badge-pill">✨ মানসিক স্বাস্থ্য ও দর্শন</div>
+        <h1 class="hero-title"><span class="hl">প্রশান্তি</span> কী?</h1>
+        <p class="sub-desc">মনের গভীর ও অনাবিল শান্তি,<br>স্থিরতা এবং নিস্তব্ধতা</p>
+
+        <svg id="char-calm" width="420" height="380" viewBox="0 0 420 380" style="margin-top:32px;">
+          <circle cx="210" cy="195" r="155" fill="#EDE9FE" opacity="0.65"/>
+          <circle cx="210" cy="195" r="120" fill="#DDD6FE" opacity="0.55"/>
+          <path d="M125 320 C125 255, 295 255, 295 320 Z" fill="#690AFF"/>
+          <path d="M105 330 Q210 355 315 330 Q285 305 210 312 Q135 305 105 330 Z" fill="#4C1D95"/>
+          <rect x="194" y="218" width="32" height="34" rx="14" fill="#FDBA74"/>
+          <circle cx="210" cy="168" r="56" fill="#FED7AA"/>
+          <path d="M154 162 C154 112, 266 112, 266 162 C255 135, 165 135, 154 162 Z" fill="#1F2937"/>
+          <g class="char-eyes">
+            <path d="M182 168 Q192 176 202 168" stroke="#111827" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+            <path d="M218 168 Q228 176 238 168" stroke="#111827" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+          </g>
+          <path d="M196 192 Q210 204 224 192" stroke="#111827" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- SCENE 2: CONTRAST (4.50s - 7.65s) -->
+    <div class="scene" id="scene-2">
+      <div class="badge-pill" style="background:#FEE2E2; border-color:#FECACA; color:#EF4444;">🚫 যা এখানে অনুপস্থিত</div>
+      <h2 class="hero-title" style="font-size:66px;">প্রশান্তির পথে বাধা নেই</h2>
+      <div class="contrast-list">
+        <div class="contrast-item" id="c-item-1">
+          <span class="word">দুঃখ (Sorrow)</span>
+          <div class="icon-circle-err">✕</div>
+        </div>
+        <div class="contrast-item" id="c-item-2">
+          <span class="word">উদ্বেগ (Anxiety)</span>
+          <div class="icon-circle-err">✕</div>
+        </div>
+        <div class="contrast-item" id="c-item-3">
+          <span class="word">চাঞ্চল্য (Restlessness)</span>
+          <div class="icon-circle-err">✕</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 3: ENGLISH MEANINGS UI (7.65s - 10.80s) -->
+    <div class="scene" id="scene-3">
+      <div class="browser-window" id="s3-browser">
+        <div class="browser-top">
+          <div class="dot r"></div>
+          <div class="dot y"></div>
+          <div class="dot g"></div>
+          <div class="url-bar">dictionary.editorial/bn-en</div>
+        </div>
+        <div class="browser-body">
+          <div class="search-box">
+            <div><span id="typewriter-text"></span><span class="cursor-caret"></span></div>
+            <span style="color:#690AFF; font-size:32px;">🔍</span>
+          </div>
+          <div class="en-pill-grid">
+            <div class="en-pill" id="en-1">
+              <span class="en">Serenity</span>
+              <span class="tag">NOUN</span>
+            </div>
+            <div class="en-pill" id="en-2">
+              <span class="en">Tranquility</span>
+              <span class="tag">NOUN</span>
+            </div>
+            <div class="en-pill" id="en-3">
+              <span class="en">Peacefulness</span>
+              <span class="tag">NOUN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 4: SYNONYMS (10.80s - 14.85s) -->
+    <div class="scene" id="scene-4">
+      <div class="hub-header" id="s4-hub">সমার্থক শব্দ</div>
+      <div class="chip-stack">
+        <div class="word-chip" id="syn-1"><div class="chip-icon ok">✓</div><span>শান্তি</span></div>
+        <div class="word-chip" id="syn-2"><div class="chip-icon ok">✓</div><span>স্থিরতা</span></div>
+        <div class="word-chip" id="syn-3"><div class="chip-icon ok">✓</div><span>স্বস্তি</span></div>
+        <div class="word-chip" id="syn-4"><div class="chip-icon ok">✓</div><span>নিরুদ্বেগ</span></div>
+        <div class="word-chip" id="syn-5"><div class="chip-icon ok">✓</div><span>নিস্তব্ধতা</span></div>
+      </div>
+    </div>
+
+    <!-- SCENE 5: ANTONYMS (14.85s - 17.55s) -->
+    <div class="scene" id="scene-5">
+      <div class="hub-header err" id="s5-hub">বিপরীত শব্দ</div>
+      <div class="chip-stack">
+        <div class="word-chip" id="ant-1"><div class="chip-icon no">✕</div><span>অশান্তি</span></div>
+        <div class="word-chip" id="ant-2"><div class="chip-icon no">✕</div><span>উদ্বেগ</span></div>
+        <div class="word-chip" id="ant-3"><div class="chip-icon no">✕</div><span>অস্থিরতা</span></div>
+        <div class="word-chip" id="ant-4"><div class="chip-icon no">✕</div><span>চাঞ্চল্য</span></div>
+      </div>
+    </div>
+
+    <!-- SCENE 6: DAILY HABITS CHECKLIST (17.55s - 22.50s) -->
+    <div class="scene" id="scene-6">
+      <div class="badge-pill">🌿 মানসিক ও দৈনন্দিন চর্চা</div>
+      <div class="todo-card">
+        <div class="todo-row" id="todo-1">
+          <div class="checkbox-box" id="chk-1"></div>
+          <div class="todo-label">প্রকৃতির সান্নিধ্য</div>
+        </div>
+        <div class="todo-row" id="todo-2">
+          <div class="checkbox-box" id="chk-2"></div>
+          <div class="todo-label">ধ্যান বা মেডিটেশন</div>
+        </div>
+        <div class="todo-row" id="todo-3" style="margin-bottom:0;">
+          <div class="checkbox-box" id="chk-3"></div>
+          <div class="todo-label">পর্যাপ্ত বিশ্রাম</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 7: REDUCE EXPECTATIONS & PEACE METER (22.50s - 27.00s) -->
+    <div class="scene" id="scene-7">
+      <div class="meter-box">
+        <div class="slider-track-wrap">
+          <div class="slider-head">
+            <span>অবাস্তব প্রত্যাশা</span>
+            <span id="exp-val" style="color:#EF4444; font-family:'Montserrat';">85%</span>
+          </div>
+          <div class="slider-bar">
+            <div class="slider-fill" id="exp-fill"></div>
+            <div class="slider-knob" id="exp-knob"></div>
+          </div>
+        </div>
+
+        <div class="ring-wrap">
+          <svg width="300" height="300" viewBox="0 0 300 300">
+            <circle cx="150" cy="150" r="124" stroke="#EDE9FE" stroke-width="24" fill="none"/>
+            <circle id="peace-ring" cx="150" cy="150" r="124" stroke="#690AFF" stroke-width="24" fill="none"
+              stroke-linecap="round" stroke-dasharray="779" stroke-dashoffset="779"
+              transform="rotate(-90 150 150)"/>
+          </svg>
+          <div class="ring-text">
+            <div class="ring-num" id="peace-num">0%</div>
+            <div class="ring-sub">মানসিক প্রশান্তি</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 8: REFERENCES & OUTRO (27.00s - 35.55s) -->
+    <div class="scene" id="scene-8">
+      <div class="badge-pill">📚 আরো বিস্তারিত জানতে</div>
+      <div class="ref-card" id="ref-1">
+        <div class="ref-logo">DS</div>
+        <div class="ref-info">
+          <h3>ডেইলি স্টার (The Daily Star)</h3>
+          <p>মানসিক প্রশান্তি বিষয়ক প্রতিবেদন</p>
+        </div>
+      </div>
+      <div class="ref-card" id="ref-2">
+        <div class="ref-logo" style="background:#D1FAE5; color:#10B981;">অ</div>
+        <div class="ref-info">
+          <h3>শব্দিক বাংলা অভিধান</h3>
+          <p>‘প্রশান্তি’ শব্দের বিস্তারিত পাতা</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Vector Mouse Cursor & Purple Ripple -->
+  <div id="ripple"></div>
+  <svg id="cursor" viewBox="0 0 48 48">
+    <path d="M10 6 L38 22 L24 26 L18 40 Z" fill="#111827" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round"/>
+  </svg>
+
+  <!-- Floating Word-Highlighted Pill Subtitle -->
+  <div id="subtitle-zone">
+    <div class="subtitle-pill" id="subtitle-pill"></div>
+  </div>
+</div>
+
+<!-- Preview Playback Bar -->
+<div id="preview-bar">
+  <button id="btn-play">▶ Play Preview</button>
+  <span id="time-display">00.00s / 35.55s</span>
+  <audio id="vo-audio" src="voiceover.wav" preload="auto"></audio>
+</div>
+
+<script>
+  function fitStage() {
+    if (navigator.webdriver) return;
+    const scale = Math.min(window.innerWidth / 1080, (window.innerHeight - 70) / 1920);
+    document.getElementById('stage').style.transform = `scale(${scale})`;
+  }
+  window.addEventListener('resize', fitStage);
+  fitStage();
+
+  const wordsData = [
+    "প্রশান্তি","হলো","মনের","গভীর","ও","অনাবিল","শান্তি,","স্থিরতা","এবং","নিস্তব্ধতা,",
+    "যেখানে","দুঃখ,","উদ্বেগ","বা","চাঞ্চল্য","থাকে","না।","ইংরেজিতে","এর","অর্থ",
+    "serenity,","tranquility","বা","peacefulness।","মূল","দিকসমূহ:","সমার্থক","শব্দ:","শান্তি,","স্থিরতা,",
+    "স্বস্তি,","নিরুদ্বেগ,","নিস্তব্ধতা।","বিপরীত","শব্দ:","অশান্তি,","উদ্বেগ,","অস্থিরতা,","চাঞ্চল্য।","মানসিক",
+    "ও","দৈনন্দিন","চর্চা:","প্রকৃতির","সান্নিধ্য,","ধ্যান","বা","মেডিটেশন,","পর্যাপ্ত","বিশ্রাম",
+    "এবং","অবাস্তব","প্রত্যাশা","কমানো","মানসিক","প্রশান্তি","ধরে","রাখতে","সাহায্য","করে।",
+    "এই","বিষয়ে","আরো","বিস্তারিত","জানতে","ডেইলি","স্টারের","মানসিক","প্রশান্তি","বিষয়ক",
+    "প্রতিবেদন","ও","শব্দিক","বাংলা","অভিধানের","প্রশান্তি","পাতা","দেখতে","পারেন।"
+  ].map((word, idx) => ({
+    word,
+    start: +(idx * 0.45).toFixed(2),
+    end: +((idx + 1) * 0.45).toFixed(2)
+  }));
+
+  const CHUNK_SIZE = 4;
+  const pillEl = document.getElementById('subtitle-pill');
+  let currentChunkIdx = -1;
+
+  function renderSubtitleAt(t) {
+    const wordIdx = Math.min(wordsData.length - 1, Math.max(0, Math.floor(t / 0.45)));
+    const chunkIdx = Math.floor(wordIdx / CHUNK_SIZE);
+    if (chunkIdx !== currentChunkIdx) {
+      currentChunkIdx = chunkIdx;
+      const slice = wordsData.slice(chunkIdx * CHUNK_SIZE, (chunkIdx + 1) * CHUNK_SIZE);
+      pillEl.innerHTML = slice.map((w, i) =>
+        `<span class="sub-word" data-gidx="${chunkIdx * CHUNK_SIZE + i}">${w.word}</span>`
+      ).join('');
+    }
+    pillEl.querySelectorAll('.sub-word').forEach(el => {
+      const gIdx = Number(el.dataset.gidx);
+      el.classList.toggle('active', gIdx === wordIdx);
+    });
+  }
+
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  let actx = null;
+  function playSFX(type) {
+    if (navigator.webdriver) return;
+    if (!actx) actx = new AudioCtx();
+    if (actx.state === 'suspended') actx.resume();
+    const now = actx.currentTime;
+    const osc = actx.createOscillator();
+    const gain = actx.createGain();
+    osc.connect(gain);
+    gain.connect(actx.destination);
+
+    if (type === 'pop') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(320, now);
+      osc.frequency.exponentialRampToValueAtTime(760, now + 0.09);
+      gain.gain.setValueAtTime(0.14, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+      osc.start(now); osc.stop(now + 0.11);
+    } else if (type === 'tick') {
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(1100, now);
+      osc.frequency.exponentialRampToValueAtTime(280, now + 0.045);
+      gain.gain.setValueAtTime(0.18, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+      osc.start(now); osc.stop(now + 0.055);
+    } else if (type === 'whoosh') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(140, now);
+      osc.frequency.exponentialRampToValueAtTime(420, now + 0.18);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+      osc.start(now); osc.stop(now + 0.23);
+    }
+  }
+
+  function triggerRipple(tl, time, x, y) {
+    tl.set('#ripple', { left: x, top: y, scale: 0, opacity: 0.85 }, time)
+      .to('#ripple', { scale: 2.2, opacity: 0, duration: 0.42, ease: 'power2.out' }, time);
+  }
+
+  const master = gsap.timeline({
+    paused: true,
+    onUpdate: () => {
+      const t = master.time();
+      renderSubtitleAt(t);
+      document.getElementById('time-display').textContent = `${t.toFixed(2)}s / 35.55s`;
+    }
+  });
+
+  gsap.to('.char-eyes', {
+    scaleY: 0.1,
+    transformOrigin: 'center center',
+    duration: 0.12,
+    repeat: -1,
+    repeatDelay: 3.2,
+    yoyo: true
+  });
+
+  // SCENE 1: 0.00s -> 4.50s
+  master.set('#scene-1', { autoAlpha: 1 }, 0)
+    .from('#s1-card', { scale: 0.82, y: 60, opacity: 0, duration: 0.42, ease: 'back.out(1.6)' }, 0.05)
+    .from('#char-calm', { scale: 0.85, opacity: 0, duration: 0.45, ease: 'back.out(1.4)' }, 0.35)
+    .to('#scene-1', { autoAlpha: 0, y: -40, duration: 0.22 }, 4.30);
+
+  // SCENE 2: 4.50s -> 7.65s
+  master.set('#scene-2', { autoAlpha: 1 }, 4.48)
+    .from('#c-item-1', { x: -90, opacity: 0, duration: 0.32, ease: 'back.out(1.4)' }, 4.95)
+    .from('#c-item-2', { x: -90, opacity: 0, duration: 0.32, ease: 'back.out(1.4)' }, 5.40)
+    .from('#c-item-3', { x: -90, opacity: 0, duration: 0.32, ease: 'back.out(1.4)' }, 6.30)
+    .to('#scene-2', { autoAlpha: 0, scale: 0.94, duration: 0.22 }, 7.45);
+
+  // SCENE 3: 7.65s -> 10.80s
+  const twObj = { len: 0 };
+  const twStr = "প্রশান্তি (Peace)";
+  master.set('#scene-3', { autoAlpha: 1 }, 7.63)
+    .from('#s3-browser', { y: 80, scale: 0.92, opacity: 0, duration: 0.36, ease: 'back.out(1.4)' }, 7.65)
+    .to(twObj, {
+      len: twStr.length,
+      duration: 0.75,
+      ease: 'none',
+      onUpdate: () => {
+        document.getElementById('typewriter-text').textContent = twStr.slice(0, Math.round(twObj.len));
+      }
+    }, 8.00)
+    .to('#s3-browser', { scale: 1.07, duration: 2.2, ease: 'power1.out' }, 8.30)
+    .from('#en-1', { y: 36, opacity: 0, scale: 0.9, duration: 0.3, ease: 'back.out(1.6)' }, 9.00)
+    .from('#en-2', { y: 36, opacity: 0, scale: 0.9, duration: 0.3, ease: 'back.out(1.6)' }, 9.45)
+    .from('#en-3', { y: 36, opacity: 0, scale: 0.9, duration: 0.3, ease: 'back.out(1.6)' }, 10.35)
+    .to('#scene-3', { autoAlpha: 0, duration: 0.20 }, 10.65);
+
+  // SCENE 4: 10.80s -> 14.85s
+  master.set('#scene-4', { autoAlpha: 1 }, 10.80)
+    .from('#s4-hub', { scale: 0.75, opacity: 0, duration: 0.34, ease: 'back.out(1.7)' }, 11.70)
+    .from('#syn-1', { y: 40, opacity: 0, duration: 0.28, ease: 'back.out(1.5)' }, 12.60)
+    .from('#syn-2', { y: 40, opacity: 0, duration: 0.28, ease: 'back.out(1.5)' }, 13.05)
+    .from('#syn-3', { y: 40, opacity: 0, duration: 0.28, ease: 'back.out(1.5)' }, 13.50)
+    .from('#syn-4', { y: 40, opacity: 0, duration: 0.28, ease: 'back.out(1.5)' }, 13.95)
+    .from('#syn-5', { y: 40, opacity: 0, duration: 0.28, ease: 'back.out(1.5)' }, 14.40)
+    .to('#scene-4', { autoAlpha: 0, x: -70, duration: 0.20 }, 14.70);
+
+  // SCENE 5: 14.85s -> 17.55s
+  master.set('#scene-5', { autoAlpha: 1 }, 14.85)
+    .from('#s5-hub', { scale: 0.75, opacity: 0, duration: 0.32, ease: 'back.out(1.7)' }, 14.90)
+    .from('#ant-1', { x: 70, opacity: 0, duration: 0.26, ease: 'back.out(1.4)' }, 15.75)
+    .from('#ant-2', { x: 70, opacity: 0, duration: 0.26, ease: 'back.out(1.4)' }, 16.20)
+    .from('#ant-3', { x: 70, opacity: 0, duration: 0.26, ease: 'back.out(1.4)' }, 16.65)
+    .from('#ant-4', { x: 70, opacity: 0, duration: 0.26, ease: 'back.out(1.4)' }, 17.10)
+    .to('#scene-5', { autoAlpha: 0, duration: 0.20 }, 17.40);
+
+  // SCENE 6: 17.55s -> 22.50s
+  master.set('#scene-6', { autoAlpha: 1 }, 17.55)
+    .set('#cursor', { opacity: 1, left: 820, top: 1180 }, 18.80)
+    .to('#cursor', { left: 230, top: 760, duration: 0.45, ease: 'power2.inOut' }, 18.90)
+    .call(() => {
+      document.getElementById('todo-1').classList.add('checked');
+      document.getElementById('chk-1').textContent = '✓';
+    }, null, 19.35);
+  triggerRipple(master, 19.35, 225, 755);
+
+  master.to('#cursor', { left: 230, top: 905, duration: 0.45, ease: 'power2.inOut' }, 19.80)
+    .call(() => {
+      document.getElementById('todo-2').classList.add('checked');
+      document.getElementById('chk-2').textContent = '✓';
+    }, null, 20.25);
+  triggerRipple(master, 20.25, 225, 900);
+
+  master.to('#cursor', { left: 230, top: 1050, duration: 0.45, ease: 'power2.inOut' }, 21.15)
+    .call(() => {
+      document.getElementById('todo-3').classList.add('checked');
+      document.getElementById('chk-3').textContent = '✓';
+    }, null, 21.60);
+  triggerRipple(master, 21.60, 225, 1045);
+
+  master.to('#scene-6', { autoAlpha: 0, duration: 0.20 }, 22.35);
+
+  // SCENE 7: 22.50s -> 27.00s
+  const meterState = { exp: 85, peace: 0 };
+  master.set('#scene-7', { autoAlpha: 1 }, 22.50)
+    .to('#cursor', { left: 790, top: 735, duration: 0.35 }, 22.90)
+    .to('#cursor', { left: 270, top: 735, duration: 0.85, ease: 'power2.inOut' }, 23.40)
+    .to(meterState, {
+      exp: 15,
+      duration: 0.85,
+      ease: 'power2.inOut',
+      onUpdate: () => {
+        const v = Math.round(meterState.exp);
+        document.getElementById('exp-val').textContent = `${v}%`;
+        document.getElementById('exp-fill').style.width = `${v}%`;
+        document.getElementById('exp-knob').style.left = `${v}%`;
+      }
+    }, 23.40)
+    .to(meterState, {
+      peace: 100,
+      duration: 1.1,
+      ease: 'power2.out',
+      onUpdate: () => {
+        const p = Math.round(meterState.peace);
+        document.getElementById('peace-num').textContent = `${p}%`;
+        document.getElementById('peace-ring').style.strokeDashoffset = 779 - (779 * p) / 100;
+      }
+    }, 24.75)
+    .set('#cursor', { opacity: 0 }, 26.70)
+    .to('#scene-7', { autoAlpha: 0, duration: 0.20 }, 26.85);
+
+  // SCENE 8: 27.00s -> 35.55s
+  master.set('#scene-8', { autoAlpha: 1 }, 27.00)
+    .from('#ref-1', { y: 60, opacity: 0, duration: 0.38, ease: 'back.out(1.5)' }, 29.25)
+    .from('#ref-2', { y: 60, opacity: 0, duration: 0.38, ease: 'back.out(1.5)' }, 32.40)
+    .set('#cursor', { opacity: 1, left: 820, top: 1200 }, 32.80)
+    .to('#cursor', { left: 540, top: 1040, duration: 0.45, ease: 'power2.out' }, 33.00);
+  triggerRipple(master, 33.45, 540, 1040);
+
+  // SFX Cues (2 frames / 65ms lead)
+  [0.0, 4.45, 7.60, 10.75, 14.80, 17.50, 22.45, 26.95].forEach(t => master.call(() => playSFX('whoosh'), null, t));
+  [0.15, 5.35, 9.0, 9.45, 10.35, 12.6, 13.05, 13.5, 13.95, 14.4, 25.15, 29.25, 32.4].forEach(t => master.call(() => playSFX('pop'), null, t));
+  [19.3, 20.2, 21.55, 23.35, 33.4].forEach(t => master.call(() => playSFX('tick'), null, t));
+
+  window.__timelines = { main: master };
+  window.seekTo = function(seconds) {
+    master.pause();
+    master.seek(seconds, false);
+    renderSubtitleAt(seconds);
+  };
+  window.seekTo(0);
+
+  const audioEl = document.getElementById('vo-audio');
+  const btnPlay = document.getElementById('btn-play');
+  btnPlay.addEventListener('click', () => {
+    if (master.paused()) {
+      audioEl.currentTime = master.time();
+      audioEl.play().catch(() => {});
+      master.play();
+      btnPlay.textContent = '⏸ Pause';
+    } else {
+      audioEl.pause();
+      master.pause();
+      btnPlay.textContent = '▶ Play Preview';
+    }
+  });
+</script>
+</body>
+</html>
